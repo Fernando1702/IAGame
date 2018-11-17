@@ -57,8 +57,7 @@ public class Piece : MonoBehaviour {
    public void MoveToPosition(Vector3Int pos)
    {      
       Piece other = GameManager.Instance.pieceInPosition(pos);
-
-
+      
       position = pos;
       GameManager.Instance.EndTurn(team);
 
@@ -67,8 +66,6 @@ public class Piece : MonoBehaviour {
          Debug.Log(pos + " " + other.team);
          other.KillPiece();
       }
-
-
    }
 
    public void KillPiece()

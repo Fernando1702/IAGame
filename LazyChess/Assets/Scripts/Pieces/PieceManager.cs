@@ -4,8 +4,7 @@ using UnityEngine;
 public static class PieceManager
 {
    public static Dictionary<PieceType, PieceMovement> movementsPerType;
-
-
+   
    static void GenerateMovements()
    {
       movementsPerType = new Dictionary<PieceType, PieceMovement>();
@@ -26,7 +25,6 @@ public static class PieceManager
 
    public static Vector3Int[] GetPieceMovements(PieceType type)
    {
-
       if(movementsPerType == null)
       {
          GenerateMovements();
@@ -35,6 +33,19 @@ public static class PieceManager
       return movementsPerType[type].targetPositions;
    }
 
+   public static Vector2Int[] GetPieceMovements2D(PieceType type)
+   {
+      Vector3Int[] movements = GetPieceMovements(type);
+
+      List<Vector2Int> Movements = new List<Vector2Int>();
+
+      for (int i = 0; i < movements.Length; i++)
+      {
+         Movements.Add(new Vector2Int(movements[i].x,movements[i].z));
+      }
+
+      return Movements.ToArray();
+   }
 }
 
 public class PieceMovement
