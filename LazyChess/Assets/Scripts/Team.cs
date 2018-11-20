@@ -15,6 +15,7 @@ public class Team : MonoBehaviour {
    public void OnTurnStart()
    {
       teamController.active = true;
+      //teamController.OnTurnStart();
    }
 
    public void OnTurnEnd()

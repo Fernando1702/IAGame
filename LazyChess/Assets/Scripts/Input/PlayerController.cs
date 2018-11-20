@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : GameController
-{   
+{
+
+   bool alreadyPlayed = false;
 	// Use this for initialization
 	void Start ()
    {
@@ -12,8 +14,8 @@ public class PlayerController : GameController
 	
 	// Update is called once per frame
 	void Update ()
-   {
-      if (active)
+   {      
+      if (active && !alreadyPlayed)
       {
          if (Input.GetButtonDown("Fire1"))
          {
@@ -24,9 +26,16 @@ public class PlayerController : GameController
             {
                if (PositionAviable(posInBoard))
                {
+                 
                   selectedPiece.MoveToPosition(posInBoard);
 
                   UnSelectPiece(selectedPiece);
+
+                  if (!GameManager.Instance.finished)
+                  {
+                     GameManager.Instance.EndTurn(team);
+                  }
+
                }
             }
 
@@ -41,6 +50,8 @@ public class PlayerController : GameController
 
 
       }
+
+      alreadyPlayed = false;
 	}
 
    void SelectPiece(Piece piece)

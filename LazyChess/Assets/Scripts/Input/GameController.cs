@@ -12,8 +12,6 @@ public class GameController : MonoBehaviour
    protected List<Vector3Int> AviableMovementPositions = new List<Vector3Int>();
    
 
-
-
    public void SetTeam(string team)
    {
       this.team = team;
@@ -21,11 +19,13 @@ public class GameController : MonoBehaviour
    
    public virtual void OnTurnStart()
    {
+      Debug.Log("Activate");
       active = true;
    }
 
    public virtual void OnTurnEnd()
    {
+      Debug.Log("Deactivate");
       active = false;
    }
    

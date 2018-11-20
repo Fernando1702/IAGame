@@ -59,7 +59,6 @@ public class Piece : MonoBehaviour {
       Piece other = GameManager.Instance.pieceInPosition(pos);
       
       position = pos;
-      GameManager.Instance.EndTurn(team);
 
       if (other && other.team != team)
       {
@@ -77,6 +76,7 @@ public class Piece : MonoBehaviour {
 
       if(pieceType == PieceType.flag)
       {
+         Debug.Log("Banderitas");
          GameManager.Instance.OnFlagKilled(team);
       }
 

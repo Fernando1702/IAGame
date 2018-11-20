@@ -6,7 +6,6 @@ using TMPro;
 
 public class GameManager : MonoBehaviour
 {
-
    public Board gameBoard;
 
    List<Piece> piecesInGame = new List<Piece>();
@@ -15,26 +14,33 @@ public class GameManager : MonoBehaviour
 
    public static GameManager Instance { get; private set; }
 
+   public SpriteRenderer turnColor;
+
    public Team p1, p2;
+
+   public bool finished = false;
 
    public void EndTurn(string teamId)
    {
-      Debug.Log(teamId);
-
+      
       if (teamId == p1.teamId)
       {
-         p2.OnTurnStart();
-         p1.OnTurnEnd();
+         Debug.Log("turn AI");
+         
+         p2.teamController.OnTurnStart();
+         p1.teamController.OnTurnEnd();
+         turnColor.color = p2.teamColor;
          //Empieza turno 2
       }
       else
       {
-         p1.OnTurnStart();
-         p2.OnTurnEnd();
-         //Empieza turno 1
+         Debug.Log("turn Player");
+
+         p1.teamController.OnTurnStart();
+         p2.teamController.OnTurnEnd();
+         turnColor.color = p1.teamColor;
       }
 
-      //Comprobar condición de victoria
    }
 
    void Awake()
@@ -52,10 +58,7 @@ public class GameManager : MonoBehaviour
    // Use this for initialization
    void Start()
    {
-      p1.teamController.OnTurnStart();
-      p2.teamController.OnTurnEnd();
-
-      winText.text = "";
+      EndTurn(p2.teamId);
    }
 
    public void AddPiece(Piece piece)
@@ -110,8 +113,64 @@ public class GameManager : MonoBehaviour
 
       p1.teamController.OnTurnEnd();
       p2.teamController.OnTurnEnd();
+
+      finished = true;
    }
 
+   public byte[,] GetByteBoard()
+   {
+      byte[,] byteBoard =new byte[gameBoard.dimensions.x, gameBoard.dimensions.y];
+
+      for (int i = 0; i < gameBoard.dimensions.y; i++)
+      {
+         for (int j = 0; j < gameBoard.dimensions.x; j++)
+         {
+            Piece piece = GameManager.Instance.pieceInPosition(new Vector3Int(j, 0, i));
+
+            if (piece != null)
+            {
+               byteBoard[j, i] = EvaluatePieceByte(piece);
+            }
+            else
+            {
+               byteBoard[j, i] = 0;
+            }
+
+         }
+      }
+
+      return byteBoard;
+   }
+
+   byte EvaluatePieceByte(Piece piece)
+   {
+      byte pieceByte = 0;
+
+      byte addition = (byte)((piece.team == p1.teamId) ? 1 : 0);
+      
+
+      switch (piece.pieceType)
+      {
+         case PieceType.flag:
+
+            pieceByte = (byte)(1 + addition);
+
+            break;
+         case PieceType.cross:
+
+            pieceByte = (byte)(5 + addition);
+
+            break;
+         case PieceType.square:
+
+            pieceByte = (byte)(3 + addition);
+
+            break;
+      }
+
+      return pieceByte;
+   }
+   
 	// Update is called once per frame
 	void Update () {
 		
