@@ -19,13 +19,11 @@ public class GameController : MonoBehaviour
    
    public virtual void OnTurnStart()
    {
-      Debug.Log("Activate");
       active = true;
    }
 
    public virtual void OnTurnEnd()
    {
-      Debug.Log("Deactivate");
       active = false;
    }
    

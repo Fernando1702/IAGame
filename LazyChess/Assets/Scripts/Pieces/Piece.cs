@@ -62,14 +62,12 @@ public class Piece : MonoBehaviour {
 
       if (other && other.team != team)
       {
-         Debug.Log(pos + " " + other.team);
          other.KillPiece();
       }
    }
 
    public void KillPiece()
    {
-      Debug.Log(name);
       SetOutlineColor(GameManager.Instance.DeathColor);
       GameManager.Instance.RemovePiece(this);
       position = GameManager.Instance.GetTeamById(team).stackPosition + ((pieceType == PieceType.cross)? new Vector3Int(0,0,1) : Vector3Int.zero) ;

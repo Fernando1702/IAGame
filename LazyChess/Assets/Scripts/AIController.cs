@@ -29,12 +29,15 @@ public class AIController : GameController
 
       //Debug.Log(aux);
 
+      Debug.Log((byteBoard[0, byteBoard.GetLength(1) - 1]));
+      Debug.Log(byteBoard[byteBoard.GetLength(0) - 1, 0]);
+
       BoardNegamax board = new BoardNegamax(1, byteBoard); //Extraer del tablero
                                                            //Llamar a negamax
 
-      MoveAndScore result = NegamaxAlphaBeta(board, 5, 0, -100000, 100000);
+      MoveAndScore result = NegamaxAlphaBeta(board, 4, 0, -100000, 100000);
 
-      Debug.Log(result.score);
+        Debug.Log(new Vector3Int(result.move.from.x, 0, result.move.from.y));
 
       Piece pieceToMove = GameManager.Instance.pieceInPosition(new Vector3Int(result.move.from.x, 0, result.move.from.y));
 
@@ -250,49 +253,94 @@ public class AIController : GameController
          {
             for (int j = 0; j < board.GetLength(1); j++)
             {
-               Vector2 rigthCorner = new Vector2(board.GetLength(0), 0);
-               Vector2 leftCorner = new Vector2(0, board.GetLength(1));
+                Vector2 rigthCorner = new Vector2(board.GetLength(0), 0);
+                Vector2 leftCorner = new Vector2(0, board.GetLength(1));
 
-               float maxDist = Vector2.Distance(rigthCorner, leftCorner);
-               float dist = 0;
-               float distMul = 200;
+                float maxDist = Vector2.Distance(rigthCorner, leftCorner);
+                float dist = 0;
+                float distMul = 2;
                
-                  if (board[i, j] == 2)
-                  {
-                     score += 5000;
-                  }
-                  else if (board[i, j] == 1)
-                  {
-                     score -= 5000;
-                  }
-                  else if (board[i, j] == 3)
-                  {
-                     score -= 15;
-                     dist = Vector2.Distance(new Vector2(i, j), leftCorner);
-                     score -= (int)(distMul * (dist / maxDist));
-                  }
-                  else if (board[i, j] == 4)
-                  {
-                     score += 15;
-                     dist = Vector2.Distance(new Vector2(i, j), rigthCorner);
-                     score += (int)(distMul * (dist / maxDist));
-                  }
-                  else if (board[i, j] == 5)
-                  {
-                     score -= 10;
-                     dist = Vector2.Distance(new Vector2(i, j), leftCorner);
-                     score -= (int)(distMul * (dist / maxDist));
-                  }
-                  else if (board[i, j] == 6)
-                  {
-                     score += 10;
-                     dist = Vector2.Distance(new Vector2(i, j), rigthCorner);
-                     score += (int)(distMul * (dist / maxDist));
-                  }                
+                if (board[i, j] == 2)
+                {
+                   score += 10000;
+                }
+                else if (board[i, j] == 1)
+                {
+                   score -= 10000;
+                }
+                else if (board[i, j] == 3)
+                {
+                   score -= 15;
+                   dist = Vector2.Distance(new Vector2(i, j), leftCorner);
+                   score -= (int)(distMul * (dist / maxDist));
+                }
+                else if (board[i, j] == 4)
+                {
+                   score += 15;
+                   dist = Vector2.Distance(new Vector2(i, j), rigthCorner);
+                   score += (int)(distMul * (dist / maxDist));
+                }
+                else if (board[i, j] == 5)
+                {
+                   score -= 10;
+                   dist = Vector2.Distance(new Vector2(i, j), leftCorner);
+                   score -= (int)(distMul * (dist / maxDist));
+                }
+                else if (board[i, j] == 6)
+                {
+                   score += 10;
+                   dist = Vector2.Distance(new Vector2(i, j), rigthCorner);
+                   score += (int)(distMul * (dist / maxDist));
+                }                
             }
          }
 
-         return score * pMultiplier;
+            if (board[board.GetLength(0) - 2, 0] == 0)
+            {
+                score -= 50;
+            }
+
+            else if (board[board.GetLength(0) - 2, 0] % 2 == 0)
+            {
+                score += 1000;
+            }
+
+            else if (board[board.GetLength(0) - 2, 0] % 2 != 0)
+            {
+                score -= 5000;
+            }
+
+            if (board[board.GetLength(0) - 1, 1] == 0)
+            {
+                score -= 50;
+            }
+
+            else if (board[board.GetLength(0) - 1, 1] % 2 == 0)
+            {
+                score += 1000;
+            }
+
+            else if (board[board.GetLength(0) - 1, 1] % 2 != 0)
+            {
+                score -= 5000;
+            }
+
+            if (board[board.GetLength(0) - 2, 1] == 0)
+            {
+                score -= 50;
+            }
+
+            else if (board[board.GetLength(0) - 2, 1] % 2 == 0)
+            {
+                score += 1000;
+            }
+
+            else if (board[board.GetLength(0) - 2, 1] % 2 != 0)
+            {
+                score -= 5000;
+            }
+
+            return score * pMultiplier;
       }
 
       
