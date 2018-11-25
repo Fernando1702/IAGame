@@ -37,11 +37,11 @@ public class AIController : GameController
 
       MoveAndScore result = NegamaxAlphaBeta(board, 4, 0, -100000, 100000);
 
-        Debug.Log(new Vector3Int(result.move.from.x, 0, result.move.from.y));
+      Debug.Log(result);
 
       Piece pieceToMove = GameManager.Instance.pieceInPosition(new Vector3Int(result.move.from.x, 0, result.move.from.y));
-
       pieceToMove.MoveToPosition(new Vector3Int(result.move.to.x, 0, result.move.to.y));
+      
 
       GameManager.Instance.EndTurn(team);
    }
@@ -365,7 +365,7 @@ public class AIController : GameController
          return new MoveAndScore(null, board.Evaluate());
       }
 
-      MoveAndScore bestMoveAndScore = new MoveAndScore(null, -10000);
+      MoveAndScore bestMoveAndScore = new MoveAndScore(null, -1000000);
 
       foreach (Move move in board.GetMoves())
       {
